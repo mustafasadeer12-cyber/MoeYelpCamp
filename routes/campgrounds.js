@@ -22,26 +22,26 @@ router.get('/new',isLoggedIn, (req, res) => {
  
 router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res) => {
     // if(!req.body.campground) throw new ExpressError('Invalid Campground')
-    console.log('--- DEBUGGING BUG #1 ---');
-    console.log('1. req.user object:', req.user);
-    console.log('2. req.user._id exact value:', req.user._id);
+    // console.log('--- DEBUGGING BUG #1 ---');
+    // console.log('1. req.user object:', req.user);
+    // console.log('2. req.user._id exact value:', req.user._id);
     
     const campground = new Campground(req.body.campground);
     campground.author = req.user._id;
     
-    console.log('3. Campground object BEFORE save:', campground);
+    // console.log('3. Campground object BEFORE save:', campground);
     
     await campground.save();
     
-    console.log('4. Campground object AFTER save:', campground);
-    console.log('------------------------');
+    // console.log('4. Campground object AFTER save:', campground);
+    // console.log('------------------------');
 
     req.flash('success', 'Successfully Made a New Camp!');
     res.redirect(`/campgrounds/${campground._id}`);
 }));
 
 
-router.get('/:id', isLoggedIn,catchAsync( async (req,res) => {
+router.get('/:id',catchAsync( async (req,res) => {
     const campground = await Campground.findById(req.params.id).populate('reviews').populate('author')
     console.log(campground)
     if(!campground) {
