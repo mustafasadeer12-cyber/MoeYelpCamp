@@ -1,25 +1,18 @@
 const express = require('express')
 const router = express.Router({ mergeParams: true})
-
 const {reviewSchema} = require('../schemas')
-
-
 const Review = require('../models/review')
 const Campground = require('../models/campground')
-
 const catchAsync = require('../utils/catchAsync')
 const ExpressError = require('../utils/ExpressError')
-
-const {isLoggedIn,validateReview } = require('../middleware')
-
-
-
+const {isLoggedIn,validateReview, isReviewAuthor } = require('../middleware')
 
 
 
 router.post('/', isLoggedIn, validateReview, catchAsync( async (req, res) => { //Three Steps
 const campground = await Campground.findById(req.params.id); // 1.extract id from req.params and store it
 const review = new Review(req.body.review) // 2.make new review, using this from name="review[body]" in the show.ejs??! 
+review.author = req.user._id 
 campground.reviews.push(review);  // 3.push the new review
 await review.save();
 await campground.save();
@@ -29,7 +22,7 @@ res.redirect(`/campgrounds/${campground._id}`)
 }))
 
 
-router.delete('/:reviewId',isLoggedIn, catchAsync( async (req, res) => {
+router.delete('/:reviewId',isLoggedIn,isReviewAuthor, catchAsync( async (req, res) => {
     // 1. Exctract both IDs from the URL Params
     const {id, reviewId} = req.params; 
     
