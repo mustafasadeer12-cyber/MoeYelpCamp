@@ -1,0 +1,31 @@
+const Review = require('../models/review')
+const Campground = require('../models/campground')
+
+module.exports.createReview = async (req, res) => { //Three Steps
+const campground = await Campground.findById(req.params.id); // 1.extract id from req.params and store it
+const review = new Review(req.body.review) // 2.make new review, using this from name="review[body]" in the show.ejs??! 
+review.author = req.user._id 
+campground.reviews.push(review);  // 3.push the new review
+await review.save();
+await campground.save();
+req.flash('success', 'Created new review!')
+res.redirect(`/campgrounds/${campground._id}`)
+
+}
+
+
+module.exports.deleteReview = async (req, res) => {
+    // 1. Exctract both IDs from the URL Params
+    const {id, reviewId} = req.params; 
+    
+    // 2. Remove the review ID from the Campground's reviews array (Cleaning the parent)
+    await Campground.findByIdAndUpdate(id , { $pull: { reviews: reviewId}}) 
+    
+    // 3. Delete the actual review document from the database (Killing the child)
+    await Review.findByIdAndDelete(reviewId) 
+    
+    // 4. Redirect back to Campgrounds show page
+    req.flash('success', 'You deleted a review!')
+    res.redirect(`/campgrounds/${id}`) 
+}
+
