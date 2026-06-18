@@ -9,7 +9,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/MoeYelpCamp');
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
-    console.log("Database connected");
+    console.log("Seeding..ENDED");
 });
 
 
@@ -29,9 +29,29 @@ const seedDB = async() => {
             author:'6a20aad2869f198041ea0a7b',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
-            image:`https://picsum.photos/400?random=${Math.random()}`,
             description: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum recusandae harum eveniet itaque at a deleniti sapiente repudiandae animi nemo laboriosam in modi suscipit dolore id, incidunt, tenetur cumque debitis.',
-            price
+            price,
+            images:  [{
+            url: 'https://res.cloudinary.com/dt4dettlr/image/upload/v1781802303/YelpCamp/mwomoystbd9rrqc9wae5.jpg',
+             filename: 'YelpCamp/mwomoystbd9rrqc9wae5',
+      
+            },
+            {
+             url: 'https://res.cloudinary.com/dt4dettlr/image/upload/v1781802303/YelpCamp/z9az3b8nictcs6g5utjt.jpg',
+            filename: 'YelpCamp/z9az3b8nictcs6g5utjt',
+      
+              },
+             {
+             url: 'https://res.cloudinary.com/dt4dettlr/image/upload/v1781802303/YelpCamp/hey0fjzl7kli1sseul4a.jpg',
+             filename: 'YelpCamp/hey0fjzl7kli1sseul4a',
+      
+             },
+            {
+             url: 'https://res.cloudinary.com/dt4dettlr/image/upload/v1781802303/YelpCamp/hxfhbv88c5oqn11vysna.jpg',
+            filename: 'YelpCamp/hxfhbv88c5oqn11vysna',
+            }
+            ]
+
         })
         await camp.save();
     }
