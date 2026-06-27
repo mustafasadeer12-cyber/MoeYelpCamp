@@ -7,7 +7,7 @@ module.exports.renderRegisterForm =  (req, res) => {
 
 module.exports.register = async(req, res, next) => {
     req.flash('error', 'Under maintenance')
-    res.redirect('/')
+    return res.redirect('/')
    
     try {
     const { username, email, password} =  req.body
