@@ -6,11 +6,13 @@ module.exports.renderRegisterForm =  (req, res) => {
 
 
 module.exports.register = async(req, res, next) => {
+    req.flash('error', 'Under maintenance')
+    res.redirect('/')
+   
     try {
     const { username, email, password} =  req.body
     const user = new User({email, username})
     const registeredUser =  await User.register(user, password)
-    // console.log(registeredUser)
         req.login(registeredUser, err => { // to make user stay logged in after register, better experience
         if(err) return next()
         req.flash('success', 'Welcome to YelpCamp!')
@@ -21,7 +23,6 @@ module.exports.register = async(req, res, next) => {
         req.flash('error', e.message)
         res.redirect('/register')
     }
-    // res.send(req.body) //testing 
 }
 
 
