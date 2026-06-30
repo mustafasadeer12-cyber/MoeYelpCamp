@@ -1,16 +1,18 @@
 require('dotenv').config();
 
-const mongoose = require('mongoose')
-const Campground = require('../models/campground');
-const cities = require('./cities')
-const { places, descriptors } = require('./seedHelpers')
-
 const cloudinary = require('cloudinary').v2
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_KEY,
     api_secret: process.env.CLOUDINARY_SECRET
 });
+
+
+const mongoose = require('mongoose')
+const Campground = require('../models/campground');
+const cities = require('./cities')
+const { places, descriptors } = require('./seedHelpers')
+
 
 const dbUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/MoeYelpCamp'
 
@@ -30,7 +32,7 @@ function sample(array) {
 }
 
 
-// const sampleImages = [
+// const sampleImages = [         //..Old way
 //     {
 //         url: 'https://res.cloudinary.com/dt4dettlr/image/upload/v1781802303/YelpCamp/mwomoystbd9rrqc9wae5.jpg',
 //         filename: 'YelpCamp/mwomoystbd9rrqc9wae5',
@@ -116,7 +118,7 @@ seedDB().then(() => {
     //so we basically entered the math op into our array array[index]
     //and saved it to 'element', and we return it
     //the q: the array we passed up there, how are we going to use it?
-    //I'm sorry, Code Rust!!!! 
+    //Code Rust!!!! 
 
 
 
